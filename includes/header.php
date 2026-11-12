@@ -148,10 +148,20 @@ $isStudentArea = (strpos($_SERVER['REQUEST_URI'] ?? '', '/student/') !== false);
                                     </div>
                                 </a>
                             <?php else: ?>
-                                <div class="text-right hidden sm:block">
-                                    <div class="text-xs font-bold text-slate-800 leading-tight"><?= sanitize($currentUser['full_name']) ?></div>
-                                    <div class="text-[10px] text-slate-500 capitalize">Guru Pembimbing</div>
-                                </div>
+                                <a href="<?= base_url('teacher/profile.php') ?>" class="flex items-center gap-2 hover:opacity-85 transition group" title="Pengaturan Profil, Foto & Sandi Guru">
+                                    <?php $navAvatar = get_user_avatar($currentUser['avatar'] ?? ''); ?>
+                                    <?php if ($navAvatar): ?>
+                                        <img src="<?= $navAvatar ?>" alt="Avatar" class="w-8 h-8 rounded-xl object-cover border border-slate-200 shadow-sm">
+                                    <?php else: ?>
+                                        <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 font-extrabold text-xs flex items-center justify-center border border-amber-300 shadow-sm">
+                                            <?= strtoupper(substr($currentUser['full_name'], 0, 1)) ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="text-right hidden sm:block">
+                                        <div class="text-xs font-bold text-slate-800 leading-tight group-hover:text-blue-600 transition"><?= sanitize($currentUser['full_name']) ?></div>
+                                        <div class="text-[10px] text-slate-500 capitalize">Guru Pembimbing</div>
+                                    </div>
+                                </a>
                             <?php endif; ?>
                             <a href="<?= base_url('logout.php') ?>" title="Logout" class="w-9 h-9 rounded-lg bg-slate-100 hover:bg-red-50 hover:text-red-600 text-slate-600 flex items-center justify-center transition text-sm">
                                 <i class="fa-solid fa-right-from-bracket"></i>
@@ -213,6 +223,9 @@ $isStudentArea = (strpos($_SERVER['REQUEST_URI'] ?? '', '/student/') !== false);
                 </a>
                 <a href="<?= base_url('teacher/capstone-review.php') ?>" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-100">
                     <i class="fa-solid fa-list-check mr-2 text-purple-500 w-5"></i> Review Proyek Akhir
+                </a>
+                <a href="<?= base_url('teacher/profile.php') ?>" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-100">
+                    <i class="fa-solid fa-user-gear mr-2 text-indigo-500 w-5"></i> Profil &amp; Ganti Sandi
                 </a>
             <?php endif; ?>
             <a href="<?= base_url('logout.php') ?>" class="block px-3 py-2 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50 mt-2">
