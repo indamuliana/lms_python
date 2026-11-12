@@ -1,0 +1,16 @@
+# OS & Editor
+.DS_Store
+Icon
+Icon?
+Thumbs.db
+.vscode/
+.idea/
+
+# Uploads
+uploads/avatars/*
+!uploads/avatars/index.html
+!uploads/avatars/.gitkeep
+
+# Logs & temp
+*.log
+.env
