@@ -101,23 +101,6 @@ require_once __DIR__ . '/includes/header.php';
                 Masuk Sekarang
             </button>
         </form>
-
-        <!-- Informasi Bantuan / Demo Akun -->
-        <div class="border-t border-slate-100 pt-4">
-            <div class="text-xs text-slate-500 text-center mb-2">Akun Default Guru:</div>
-            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-600 flex justify-between items-center">
-                <div>
-                    <div><strong>User Guru:</strong> <code>guru</code></div>
-                    <div><strong>Password:</strong> <code>password123</code></div>
-                </div>
-                <button type="button" onclick="document.getElementById('identifier').value='guru'; document.getElementById('password').value='password123';" class="px-2.5 py-1 text-[11px] font-bold text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100">
-                    Isi Otomatis
-                </button>
-            </div>
-            <div class="text-[11px] text-slate-400 text-center mt-3">
-                Siswa didaftarkan oleh Guru melalui fitur Import CSV.
-            </div>
-        </div>
     </div>
 </div>
 
