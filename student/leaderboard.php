@@ -126,28 +126,28 @@ require_once __DIR__ . '/../includes/header.php';
                 ?>
                 <div class="order-2 md:order-1 flex flex-col items-center">
                     <div class="relative mb-3 flex flex-col items-center">
-                        <div class="w-7 h-7 rounded-full bg-slate-300 text-slate-900 flex items-center justify-center font-black text-xs shadow-md mb-2">
+                        <div class="w-7 h-7 rounded-full bg-gradient-to-r from-slate-100 to-cyan-200 text-slate-950 flex items-center justify-center font-black text-xs shadow-md shadow-cyan-400/20 mb-2">
                             <i class="fa-solid fa-medal"></i>
                         </div>
                         <?php if ($lbAvatar2): ?>
-                            <img src="<?= $lbAvatar2 ?>" alt="Avatar" class="w-20 h-20 rounded-2xl object-cover border-4 border-slate-300 shadow-xl shadow-slate-400/20">
+                            <img src="<?= $lbAvatar2 ?>" alt="Avatar" class="w-20 h-20 rounded-2xl object-cover border-4 border-cyan-300 shadow-xl shadow-cyan-400/30 ring-2 ring-cyan-400/20">
                         <?php else: ?>
-                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 text-slate-200 border-4 border-slate-300 flex items-center justify-center text-2xl font-black shadow-xl">
+                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-400 to-slate-200 text-slate-950 border-4 border-cyan-300 flex items-center justify-center text-2xl font-black shadow-xl ring-2 ring-cyan-400/20">
                                 <?= strtoupper(substr($top2['nickname'] ?: $top2['full_name'], 0, 1)) ?>
                             </div>
                         <?php endif; ?>
                     </div>
 
-                    <div class="text-center w-full bg-gradient-to-b from-slate-900/90 to-slate-950 p-5 rounded-3xl border-2 border-slate-700/80 shadow-xl relative overflow-hidden">
-                        <div class="absolute -top-6 -right-6 w-20 h-20 bg-slate-400/10 rounded-full blur-xl pointer-events-none"></div>
-                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 text-[10px] font-black uppercase tracking-wider mb-1.5 border border-slate-700">
-                            JUARA 2
+                    <div class="text-center w-full bg-gradient-to-b from-cyan-950/30 via-slate-900 to-slate-950 p-5 rounded-3xl border-2 border-cyan-400/60 shadow-xl shadow-cyan-500/15 relative overflow-hidden">
+                        <div class="absolute -top-6 -right-6 w-20 h-20 bg-cyan-400/15 rounded-full blur-xl pointer-events-none"></div>
+                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-gradient-to-r from-slate-100 via-cyan-100 to-slate-200 text-slate-950 text-[10px] font-black uppercase tracking-wider mb-1.5 shadow-md">
+                            🥈 JUARA 2
                         </span>
                         <h3 class="text-sm font-black text-white truncate px-2" title="<?= sanitize($top2['full_name']) ?>">
                             <?= sanitize($top2['nickname'] ?: $top2['full_name']) ?>
                             <?php if ($isMe2): ?><span class="text-[10px] bg-blue-600 text-white px-1.5 py-0.2 rounded-full font-bold ml-1">Anda</span><?php endif; ?>
                         </h3>
-                        <div class="text-[11px] text-slate-400 mt-0.5 truncate"><?= sanitize($top2['rombel'] ?? '-') ?></div>
+                        <div class="text-[11px] text-cyan-200/80 mt-0.5 truncate"><?= sanitize($top2['rombel'] ?? '-') ?></div>
                         
                         <div class="mt-2.5">
                             <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black border <?= $rInfo2['badge_class'] ?>">
@@ -155,8 +155,8 @@ require_once __DIR__ . '/../includes/header.php';
                             </span>
                         </div>
 
-                        <div class="mt-3 pt-3 border-t border-slate-800 text-slate-200 font-black text-sm flex items-center justify-center gap-1 text-amber-400">
-                            <i class="fa-solid fa-bolt"></i> <?= number_format($top2['xp']) ?> XP
+                        <div class="mt-3 pt-3 border-t border-cyan-500/20 font-black text-sm flex items-center justify-center gap-1 text-cyan-300 drop-shadow-[0_2px_4px_rgba(6,182,212,0.3)]">
+                            <i class="fa-solid fa-bolt text-cyan-400"></i> <?= number_format($top2['xp']) ?> XP
                         </div>
                     </div>
                 </div>
@@ -289,22 +289,73 @@ require_once __DIR__ . '/../includes/header.php';
                             $rInfo = get_rank_info($row['xp']);
                             $lbAvatar = get_user_avatar($row['avatar'] ?? '');
 
-                            // Skema warna baris khusus 10 Besar
+                            // Skema warna baris unik khusus Peringkat 1 sampai 10
                             if ($rank === 1) {
-                                $rankBg = 'bg-gradient-to-r from-amber-950/60 via-slate-900/90 to-slate-950 border-l-4 border-amber-400 text-amber-200';
-                                $rankPill = 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-black shadow-lg shadow-amber-500/30';
+                                // Peringkat 1: Royal Gold Champion
+                                $rankBg = 'bg-gradient-to-r from-amber-500/25 via-yellow-500/10 to-transparent border-l-4 border-amber-400 text-amber-100';
+                                $rankPill = 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-black shadow-lg shadow-amber-500/30 ring-1 ring-amber-300';
+                                $rankTag = 'text-amber-400';
+                                $avatarBorder = 'border-amber-400 shadow-md shadow-amber-500/20';
                             } elseif ($rank === 2) {
-                                $rankBg = 'bg-gradient-to-r from-slate-800/80 via-slate-900/90 to-slate-950 border-l-4 border-slate-300 text-slate-200';
-                                $rankPill = 'bg-slate-300 text-slate-950 font-black shadow-md';
+                                // Peringkat 2: Platinum Cyber Silver (Cyan Shimmer)
+                                $rankBg = 'bg-gradient-to-r from-cyan-500/25 via-sky-500/10 to-transparent border-l-4 border-cyan-300 text-cyan-100';
+                                $rankPill = 'bg-gradient-to-r from-slate-100 via-cyan-100 to-sky-200 text-slate-950 font-black shadow-lg shadow-cyan-400/30 ring-1 ring-cyan-200';
+                                $rankTag = 'text-cyan-300';
+                                $avatarBorder = 'border-cyan-300 shadow-md shadow-cyan-400/20';
                             } elseif ($rank === 3) {
-                                $rankBg = 'bg-gradient-to-r from-amber-950/40 via-slate-900/90 to-slate-950 border-l-4 border-amber-700 text-amber-300';
-                                $rankPill = 'bg-amber-700 text-white font-black shadow-md';
-                            } elseif ($rank <= 10) {
-                                $rankBg = 'bg-gradient-to-r from-indigo-950/40 via-slate-900/80 to-slate-950 border-l-4 border-indigo-500 text-indigo-100';
-                                $rankPill = 'bg-indigo-900/80 border border-indigo-500/60 text-indigo-300 font-bold';
+                                // Peringkat 3: Copper Bronze
+                                $rankBg = 'bg-gradient-to-r from-orange-600/25 via-amber-700/10 to-transparent border-l-4 border-orange-500 text-orange-100';
+                                $rankPill = 'bg-gradient-to-r from-orange-500 to-amber-700 text-white font-black shadow-lg shadow-orange-500/30 ring-1 ring-orange-400';
+                                $rankTag = 'text-orange-400';
+                                $avatarBorder = 'border-orange-500 shadow-md shadow-orange-500/20';
+                            } elseif ($rank === 4) {
+                                // Peringkat 4: Emerald / Zamrud Hijau
+                                $rankBg = 'bg-gradient-to-r from-emerald-500/20 via-teal-600/10 to-transparent border-l-4 border-emerald-400 text-emerald-100';
+                                $rankPill = 'bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 font-black shadow-md shadow-emerald-500/25 ring-1 ring-emerald-300';
+                                $rankTag = 'text-emerald-400';
+                                $avatarBorder = 'border-emerald-400/70 shadow-sm shadow-emerald-500/15';
+                            } elseif ($rank === 5) {
+                                // Peringkat 5: Sapphire Royal Blue
+                                $rankBg = 'bg-gradient-to-r from-blue-600/25 via-indigo-600/10 to-transparent border-l-4 border-blue-400 text-blue-100';
+                                $rankPill = 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-black shadow-md shadow-blue-500/25 ring-1 ring-blue-300';
+                                $rankTag = 'text-blue-400';
+                                $avatarBorder = 'border-blue-400/70 shadow-sm shadow-blue-500/15';
+                            } elseif ($rank === 6) {
+                                // Peringkat 6: Amethyst Mystic Violet
+                                $rankBg = 'bg-gradient-to-r from-purple-600/25 via-violet-600/10 to-transparent border-l-4 border-purple-400 text-purple-100';
+                                $rankPill = 'bg-gradient-to-r from-purple-500 to-violet-600 text-white font-black shadow-md shadow-purple-500/25 ring-1 ring-purple-300';
+                                $rankTag = 'text-purple-400';
+                                $avatarBorder = 'border-purple-400/70 shadow-sm shadow-purple-500/15';
+                            } elseif ($rank === 7) {
+                                // Peringkat 7: Crimson Ruby Merah Menyala
+                                $rankBg = 'bg-gradient-to-r from-rose-600/25 via-red-600/10 to-transparent border-l-4 border-rose-500 text-rose-100';
+                                $rankPill = 'bg-gradient-to-r from-rose-500 to-red-600 text-white font-black shadow-md shadow-rose-500/25 ring-1 ring-rose-400';
+                                $rankTag = 'text-rose-400';
+                                $avatarBorder = 'border-rose-500/70 shadow-sm shadow-rose-500/15';
+                            } elseif ($rank === 8) {
+                                // Peringkat 8: Cyber Teal / Aqua Tosca
+                                $rankBg = 'bg-gradient-to-r from-teal-500/20 via-cyan-600/10 to-transparent border-l-4 border-teal-300 text-teal-100';
+                                $rankPill = 'bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-black shadow-md shadow-teal-500/25 ring-1 ring-teal-200';
+                                $rankTag = 'text-teal-300';
+                                $avatarBorder = 'border-teal-300/70 shadow-sm shadow-teal-500/15';
+                            } elseif ($rank === 9) {
+                                // Peringkat 9: Electric Lime Lemon
+                                $rankBg = 'bg-gradient-to-r from-lime-500/20 via-emerald-600/10 to-transparent border-l-4 border-lime-400 text-lime-100';
+                                $rankPill = 'bg-gradient-to-r from-lime-400 to-emerald-400 text-slate-950 font-black shadow-md shadow-lime-500/25 ring-1 ring-lime-300';
+                                $rankTag = 'text-lime-400';
+                                $avatarBorder = 'border-lime-400/70 shadow-sm shadow-lime-500/15';
+                            } elseif ($rank === 10) {
+                                // Peringkat 10: Neon Fuchsia Magenta
+                                $rankBg = 'bg-gradient-to-r from-fuchsia-600/25 via-pink-600/10 to-transparent border-l-4 border-fuchsia-400 text-fuchsia-100';
+                                $rankPill = 'bg-gradient-to-r from-fuchsia-500 to-pink-600 text-white font-black shadow-md shadow-fuchsia-500/25 ring-1 ring-fuchsia-300';
+                                $rankTag = 'text-fuchsia-400';
+                                $avatarBorder = 'border-fuchsia-400/70 shadow-sm shadow-fuchsia-500/15';
                             } else {
+                                // Peringkat 11 ke atas: Default Slate
                                 $rankBg = 'hover:bg-slate-800/40 text-slate-300 border-l-4 border-transparent';
                                 $rankPill = 'bg-slate-800 text-slate-400 border border-slate-700';
+                                $rankTag = 'text-slate-400';
+                                $avatarBorder = 'border-slate-700';
                             }
 
                             if ($isMe) {
@@ -319,15 +370,15 @@ require_once __DIR__ . '/../includes/header.php';
                                         <i class="fa-solid fa-crown text-[11px]"></i>
                                     </span>
                                 <?php elseif ($rank === 2): ?>
-                                    <span class="inline-flex w-7 h-7 rounded-xl <?= $rankPill ?> items-center justify-center text-xs">
+                                    <span class="inline-flex w-7 h-7 rounded-xl <?= $rankPill ?> items-center justify-center text-xs font-black">
                                         2
                                     </span>
                                 <?php elseif ($rank === 3): ?>
-                                    <span class="inline-flex w-7 h-7 rounded-xl <?= $rankPill ?> items-center justify-center text-xs">
+                                    <span class="inline-flex w-7 h-7 rounded-xl <?= $rankPill ?> items-center justify-center text-xs font-black">
                                         3
                                     </span>
                                 <?php else: ?>
-                                    <span class="inline-flex w-7 h-7 rounded-xl <?= $rankPill ?> items-center justify-center text-xs">
+                                    <span class="inline-flex w-7 h-7 rounded-xl <?= $rankPill ?> items-center justify-center text-xs font-black">
                                         #<?= $rank ?>
                                     </span>
                                 <?php endif; ?>
@@ -337,9 +388,9 @@ require_once __DIR__ . '/../includes/header.php';
                             <td class="py-3.5 px-4">
                                 <div class="flex items-center gap-3">
                                     <?php if ($lbAvatar): ?>
-                                        <img src="<?= $lbAvatar ?>" alt="Avatar" class="w-9 h-9 rounded-xl object-cover border <?= $rank <= 3 ? 'border-amber-400/70 shadow-md' : 'border-slate-700' ?> flex-shrink-0">
+                                        <img src="<?= $lbAvatar ?>" alt="Avatar" class="w-9 h-9 rounded-xl object-cover border <?= $avatarBorder ?> flex-shrink-0">
                                     <?php else: ?>
-                                        <div class="w-9 h-9 rounded-xl <?= $isMe ? 'bg-blue-600 text-white' : ($rank === 1 ? 'bg-amber-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300') ?> flex items-center justify-center text-xs font-black flex-shrink-0 border border-slate-700">
+                                        <div class="w-9 h-9 rounded-xl <?= $isMe ? 'bg-blue-600 text-white' : ($rank === 1 ? 'bg-amber-400 text-slate-950 font-black' : ($rank === 2 ? 'bg-cyan-300 text-slate-950 font-black' : ($rank === 3 ? 'bg-orange-500 text-white font-black' : 'bg-slate-800 text-slate-300'))) ?> flex items-center justify-center text-xs font-black flex-shrink-0 border <?= $avatarBorder ?>">
                                             <?= strtoupper(substr($row['nickname'] ?: $row['full_name'], 0, 1)) ?>
                                         </div>
                                     <?php endif; ?>
@@ -353,8 +404,12 @@ require_once __DIR__ . '/../includes/header.php';
                                                 <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full font-black shadow-sm">Anda</span>
                                             <?php endif; ?>
                                             <?php if ($rank <= 3): ?>
-                                                <span class="text-[10px] <?= $rank === 1 ? 'text-amber-400' : ($rank === 2 ? 'text-slate-300' : 'text-amber-600') ?> font-black uppercase">
+                                                <span class="text-[10px] <?= $rankTag ?> font-black uppercase">
                                                     &bull; Juara <?= $rank ?>
+                                                </span>
+                                            <?php elseif ($rank <= 10): ?>
+                                                <span class="text-[10px] <?= $rankTag ?> font-black uppercase">
+                                                    &bull; Top <?= $rank ?>
                                                 </span>
                                             <?php endif; ?>
                                         </div>
@@ -385,7 +440,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                             <!-- Total XP -->
                             <td class="py-3.5 px-4 text-right">
-                                <span class="<?= $rank === 1 ? 'text-amber-300 drop-shadow-[0_2px_4px_rgba(251,191,36,0.4)]' : 'text-amber-400' ?> font-black text-sm flex items-center justify-end gap-1">
+                                <span class="<?= $rankTag ?> font-black text-sm flex items-center justify-end gap-1">
                                     <i class="fa-solid fa-bolt text-xs"></i>
                                     <?= number_format($row['xp']) ?>
                                 </span>
