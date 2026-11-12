@@ -1,7 +1,7 @@
 <?php
 /**
  * Dual-View Leaderboard (Peringkat Rombel vs Global) - Akses Publik Tanpa Login
- * Tema Mobile Legends / Esports Gaming Arena
+ * Tema Esports Gaming Arena
  */
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../includes/auth.php';
@@ -65,7 +65,7 @@ require_once __DIR__ . '/../includes/header.php';
     <div class="text-center max-w-2xl mx-auto mb-10 relative">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-black tracking-wider uppercase mb-3 shadow-lg shadow-amber-500/10">
             <i class="fa-solid fa-fire text-amber-400 animate-pulse"></i>
-            <span>HALL OF FAME &bull; MOBILE LEGENDS RANK</span>
+            <span>HALL OF FAME &bull; PAPAN PERINGKAT JUARA</span>
             <i class="fa-solid fa-fire text-amber-400 animate-pulse"></i>
         </div>
         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">

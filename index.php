@@ -1,6 +1,6 @@
 <?php
 /**
- * PyLMS Landing Page - Mobile Legends Gaming & Esports Arena Theme
+ * PyLMS Landing Page - Gaming & Esports Arena Theme
  */
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/includes/auth.php';
@@ -49,7 +49,7 @@ require_once __DIR__ . '/includes/header.php';
             <!-- Badge Promo Esports -->
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-amber-500/40 text-amber-300 text-xs font-black mb-6 shadow-lg shadow-amber-500/10 backdrop-blur-sm">
                 <i class="fa-solid fa-gamepad text-amber-400 animate-pulse"></i>
-                <span>ARENA CODING PYTHON &bull; PUSH RANK MOBILE LEGENDS</span>
+                <span>ARENA CODING PYTHON &bull; PUSH RANK SISWA</span>
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             </div>
 
@@ -227,14 +227,14 @@ require_once __DIR__ . '/includes/header.php';
     </section>
     <?php endif; ?>
 
-    <!-- SHOWCASE 8 TIER RANK MOBILE LEGENDS -->
+    <!-- SHOWCASE 8 TIER RANK -->
     <section class="py-16 sm:py-20 bg-slate-950 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-12">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold mb-3">
                     <i class="fa-solid fa-shield-halved text-amber-400"></i> Sistem Gamifikasi
                 </div>
-                <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight">8 Pangkat Rank Mobile Legends</h2>
+                <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight">8 Tingkatan Pangkat Rank</h2>
                 <p class="mt-2 text-sm text-slate-400">Setiap kuis yang kamu jawab dan tantangan koding yang kamu pecahkan akan menyumbang XP untuk menaikkan tier rank akunmu.</p>
             </div>
 
@@ -433,7 +433,7 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                     <h3 class="text-base font-black text-white mb-2">Auto-Grading &amp; Buku Nilai</h3>
                     <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                        Sistem secara otomatis mengevaluasi output kode siswa, menganugerahkan lencana Mobile Legends, dan mengompilasi seluruh nilai ke buku nilai Guru untuk diekspor ke Excel.
+                        Sistem secara otomatis mengevaluasi output kode siswa, menganugerahkan lencana pangkat, dan mengompilasi seluruh nilai ke buku nilai Guru untuk diekspor ke Excel.
                     </p>
                 </div>
             </div>
