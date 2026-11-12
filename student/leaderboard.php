@@ -253,112 +253,152 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </div>
 
-        <!-- TABEL PERINGKAT (PERINGKAT 4 KE BAWAH) -->
+        <!-- TABEL LENGKAP PERINGKAT (DENGAN SOROTAN 10 BESAR) -->
         <div class="bg-slate-900/80 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden backdrop-blur-sm">
             <div class="p-4 sm:p-6 bg-slate-950/80 border-b border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                 <h2 class="text-sm sm:text-base font-black text-white flex items-center gap-2.5">
                     <i class="fa-solid fa-ranking-star text-amber-400"></i>
-                    <span><?= $leaderboardTitle ?></span>
+                    <span>Tabel <?= $leaderboardTitle ?></span>
                 </h2>
-                <span class="text-xs font-bold text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
-                    <?= count($rankings) ?> Siswa Terdaftar
-                </span>
+                <div class="flex items-center gap-2">
+                    <span class="text-[11px] font-black uppercase text-amber-400 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">
+                        <i class="fa-solid fa-bolt mr-1"></i> Top 10 Bersinar
+                    </span>
+                    <span class="text-xs font-bold text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
+                        <?= count($rankings) ?> Siswa
+                    </span>
+                </div>
             </div>
 
-            <?php if (empty($restRankings)): ?>
-                <div class="p-8 text-center text-slate-500 text-xs sm:text-sm">
-                    Seluruh peserta saat ini telah ditampilkan di Podium Juara di atas.
-                </div>
-            <?php else: ?>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs sm:text-sm">
-                        <thead>
-                            <tr class="bg-slate-950/60 text-slate-400 uppercase tracking-wider text-[11px] font-black border-b border-slate-800">
-                                <th class="py-3.5 px-4 text-center w-16">Rank</th>
-                                <th class="py-3.5 px-4">Nama Siswa &amp; Pangkat</th>
-                                <th class="py-3.5 px-4 hidden sm:table-cell">Rombel</th>
-                                <th class="py-3.5 px-4 text-center hidden md:table-cell">Badge</th>
-                                <th class="py-3.5 px-4 text-right">Total XP</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-800/60 text-slate-200">
-                            <?php 
-                            $rank = 4;
-                            foreach ($restRankings as $row): 
-                                $isMe = ($user && isset($user['id']) && $row['id'] == $user['id']);
-                                $rInfo = get_rank_info($row['xp']);
-                                $lbAvatar = get_user_avatar($row['avatar'] ?? '');
-                            ?>
-                            <tr class="<?= $isMe ? 'bg-blue-950/40 border-l-4 border-blue-500 font-semibold text-white' : 'hover:bg-slate-800/40' ?> transition">
-                                <!-- Rank Number -->
-                                <td class="py-3.5 px-4 text-center">
-                                    <span class="inline-flex w-7 h-7 rounded-xl bg-slate-800 text-slate-300 items-center justify-center font-black text-xs border border-slate-700">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm">
+                    <thead>
+                        <tr class="bg-slate-950/70 text-slate-400 uppercase tracking-wider text-[11px] font-black border-b border-slate-800">
+                            <th class="py-3.5 px-4 text-center w-16">Rank</th>
+                            <th class="py-3.5 px-4">Nama Siswa &amp; Pangkat</th>
+                            <th class="py-3.5 px-4 hidden sm:table-cell">Rombel</th>
+                            <th class="py-3.5 px-4 text-center hidden md:table-cell">Badge</th>
+                            <th class="py-3.5 px-4 text-right">Total XP</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-slate-200">
+                        <?php 
+                        $rank = 1;
+                        foreach ($rankings as $row): 
+                            $isMe = ($user && isset($user['id']) && $row['id'] == $user['id']);
+                            $rInfo = get_rank_info($row['xp']);
+                            $lbAvatar = get_user_avatar($row['avatar'] ?? '');
+
+                            // Skema warna baris khusus 10 Besar
+                            if ($rank === 1) {
+                                $rankBg = 'bg-gradient-to-r from-amber-950/60 via-slate-900/90 to-slate-950 border-l-4 border-amber-400 text-amber-200';
+                                $rankPill = 'bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-black shadow-lg shadow-amber-500/30';
+                            } elseif ($rank === 2) {
+                                $rankBg = 'bg-gradient-to-r from-slate-800/80 via-slate-900/90 to-slate-950 border-l-4 border-slate-300 text-slate-200';
+                                $rankPill = 'bg-slate-300 text-slate-950 font-black shadow-md';
+                            } elseif ($rank === 3) {
+                                $rankBg = 'bg-gradient-to-r from-amber-950/40 via-slate-900/90 to-slate-950 border-l-4 border-amber-700 text-amber-300';
+                                $rankPill = 'bg-amber-700 text-white font-black shadow-md';
+                            } elseif ($rank <= 10) {
+                                $rankBg = 'bg-gradient-to-r from-indigo-950/40 via-slate-900/80 to-slate-950 border-l-4 border-indigo-500 text-indigo-100';
+                                $rankPill = 'bg-indigo-900/80 border border-indigo-500/60 text-indigo-300 font-bold';
+                            } else {
+                                $rankBg = 'hover:bg-slate-800/40 text-slate-300 border-l-4 border-transparent';
+                                $rankPill = 'bg-slate-800 text-slate-400 border border-slate-700';
+                            }
+
+                            if ($isMe) {
+                                $rankBg .= ' ring-1 ring-blue-400/50';
+                            }
+                        ?>
+                        <tr class="<?= $rankBg ?> transition-colors">
+                            <!-- Rank Number / Medal -->
+                            <td class="py-3.5 px-4 text-center">
+                                <?php if ($rank === 1): ?>
+                                    <span class="inline-flex w-7 h-7 rounded-xl <?= $rankPill ?> items-center justify-center text-xs">
+                                        <i class="fa-solid fa-crown text-[11px]"></i>
+                                    </span>
+                                <?php elseif ($rank === 2): ?>
+                                    <span class="inline-flex w-7 h-7 rounded-xl <?= $rankPill ?> items-center justify-center text-xs">
+                                        2
+                                    </span>
+                                <?php elseif ($rank === 3): ?>
+                                    <span class="inline-flex w-7 h-7 rounded-xl <?= $rankPill ?> items-center justify-center text-xs">
+                                        3
+                                    </span>
+                                <?php else: ?>
+                                    <span class="inline-flex w-7 h-7 rounded-xl <?= $rankPill ?> items-center justify-center text-xs">
                                         #<?= $rank ?>
                                     </span>
-                                </td>
+                                <?php endif; ?>
+                            </td>
 
-                                <!-- Nama Siswa & Level -->
-                                <td class="py-3.5 px-4">
-                                    <div class="flex items-center gap-3">
-                                        <?php if ($lbAvatar): ?>
-                                            <img src="<?= $lbAvatar ?>" alt="Avatar" class="w-9 h-9 rounded-xl object-cover border border-slate-700 shadow-sm flex-shrink-0">
-                                        <?php else: ?>
-                                            <div class="w-9 h-9 rounded-xl <?= $isMe ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-300' ?> flex items-center justify-center text-xs font-black flex-shrink-0 border border-slate-700">
-                                                <?= strtoupper(substr($row['nickname'] ?: $row['full_name'], 0, 1)) ?>
-                                            </div>
-                                        <?php endif; ?>
-                                        <div>
-                                            <div class="text-white font-black flex flex-wrap items-center gap-1.5 leading-snug">
-                                                <?= sanitize($row['full_name']) ?>
-                                                <?php if (!empty($row['nickname'])): ?>
-                                                    <span class="text-[11px] text-amber-400 font-bold">(<?= sanitize($row['nickname']) ?>)</span>
-                                                <?php endif; ?>
-                                                <?php if ($isMe): ?>
-                                                    <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full font-black">Anda</span>
-                                                <?php endif; ?>
-                                            </div>
-                                            <div class="text-[11px] text-slate-400 flex flex-wrap items-center gap-2 mt-1">
-                                                <span>NIS: <?= sanitize($row['nis'] ?? '-') ?></span>
-                                                <span>&bull;</span>
-                                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black border <?= $rInfo['badge_class'] ?>">
-                                                    <i class="fa-solid <?= $rInfo['icon'] ?>"></i> <?= $rInfo['name'] ?>
+                            <!-- Nama Siswa & Level -->
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <?php if ($lbAvatar): ?>
+                                        <img src="<?= $lbAvatar ?>" alt="Avatar" class="w-9 h-9 rounded-xl object-cover border <?= $rank <= 3 ? 'border-amber-400/70 shadow-md' : 'border-slate-700' ?> flex-shrink-0">
+                                    <?php else: ?>
+                                        <div class="w-9 h-9 rounded-xl <?= $isMe ? 'bg-blue-600 text-white' : ($rank === 1 ? 'bg-amber-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300') ?> flex items-center justify-center text-xs font-black flex-shrink-0 border border-slate-700">
+                                            <?= strtoupper(substr($row['nickname'] ?: $row['full_name'], 0, 1)) ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div>
+                                        <div class="text-white font-black flex flex-wrap items-center gap-1.5 leading-snug">
+                                            <?= sanitize($row['full_name']) ?>
+                                            <?php if (!empty($row['nickname'])): ?>
+                                                <span class="text-[11px] <?= $rank <= 3 ? 'text-amber-300' : 'text-amber-400' ?> font-bold">(<?= sanitize($row['nickname']) ?>)</span>
+                                            <?php endif; ?>
+                                            <?php if ($isMe): ?>
+                                                <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full font-black shadow-sm">Anda</span>
+                                            <?php endif; ?>
+                                            <?php if ($rank <= 3): ?>
+                                                <span class="text-[10px] <?= $rank === 1 ? 'text-amber-400' : ($rank === 2 ? 'text-slate-300' : 'text-amber-600') ?> font-black uppercase">
+                                                    &bull; Juara <?= $rank ?>
                                                 </span>
-                                            </div>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="text-[11px] text-slate-400 flex flex-wrap items-center gap-2 mt-1">
+                                            <span>NIS: <?= sanitize($row['nis'] ?? '-') ?></span>
+                                            <span>&bull;</span>
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black border <?= $rInfo['badge_class'] ?>">
+                                                <i class="fa-solid <?= $rInfo['icon'] ?>"></i> <?= $rInfo['name'] ?>
+                                            </span>
                                         </div>
                                     </div>
-                                </td>
+                                </div>
+                            </td>
 
-                                <!-- Rombel -->
-                                <td class="py-3.5 px-4 hidden sm:table-cell text-slate-300 text-xs">
-                                    <span class="bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700 font-bold">
-                                        <?= sanitize($row['rombel'] ?? '-') ?>
-                                    </span>
-                                </td>
+                            <!-- Rombel -->
+                            <td class="py-3.5 px-4 hidden sm:table-cell text-slate-300 text-xs">
+                                <span class="bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700 font-bold">
+                                    <?= sanitize($row['rombel'] ?? '-') ?>
+                                </span>
+                            </td>
 
-                                <!-- Badge Count -->
-                                <td class="py-3.5 px-4 text-center hidden md:table-cell">
-                                    <span class="inline-flex items-center gap-1 text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
-                                        <i class="fa-solid fa-medal"></i> <?= (int)$row['badge_count'] ?>
-                                    </span>
-                                </td>
+                            <!-- Badge Count -->
+                            <td class="py-3.5 px-4 text-center hidden md:table-cell">
+                                <span class="inline-flex items-center gap-1 text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+                                    <i class="fa-solid fa-medal"></i> <?= (int)$row['badge_count'] ?>
+                                </span>
+                            </td>
 
-                                <!-- Total XP -->
-                                <td class="py-3.5 px-4 text-right">
-                                    <span class="text-amber-400 font-black text-sm flex items-center justify-end gap-1">
-                                        <i class="fa-solid fa-bolt text-xs"></i>
-                                        <?= number_format($row['xp']) ?>
-                                    </span>
-                                    <span class="text-[10px] text-slate-500 block">XP</span>
-                                </td>
-                            </tr>
-                            <?php 
-                            $rank++;
-                            endforeach; 
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-            <?php endif; ?>
+                            <!-- Total XP -->
+                            <td class="py-3.5 px-4 text-right">
+                                <span class="<?= $rank === 1 ? 'text-amber-300 drop-shadow-[0_2px_4px_rgba(251,191,36,0.4)]' : 'text-amber-400' ?> font-black text-sm flex items-center justify-end gap-1">
+                                    <i class="fa-solid fa-bolt text-xs"></i>
+                                    <?= number_format($row['xp']) ?>
+                                </span>
+                                <span class="text-[10px] text-slate-500 block">XP</span>
+                            </td>
+                        </tr>
+                        <?php 
+                        $rank++;
+                        endforeach; 
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     <?php endif; ?>
 </div>
