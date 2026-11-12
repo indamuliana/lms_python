@@ -92,6 +92,9 @@ $isGamingTheme = !empty($isGamingTheme);
                             <a href="<?= base_url('teacher/gradebook.php') ?>" class="px-3 py-2 rounded-lg text-sm font-semibold <?= $isGamingTheme ? 'text-emerald-300 hover:text-white hover:bg-slate-900' : 'text-slate-700 hover:text-emerald-600 hover:bg-slate-50' ?> transition">
                                 <i class="fa-solid fa-book-open mr-1.5 text-emerald-400"></i> Buku Nilai
                             </a>
+                            <a href="<?= base_url('teacher/curriculum.php') ?>" class="px-3 py-2 rounded-lg text-sm font-semibold <?= $isGamingTheme ? 'text-amber-300 hover:text-white hover:bg-slate-900' : 'text-slate-700 hover:text-amber-600 hover:bg-slate-50' ?> transition">
+                                <i class="fa-solid fa-book-bookmark mr-1.5 text-amber-500"></i> Kurikulum
+                            </a>
                             <a href="<?= base_url('teacher/students.php') ?>" class="px-3 py-2 rounded-lg text-sm font-semibold <?= $isGamingTheme ? 'text-indigo-300 hover:text-white hover:bg-slate-900' : 'text-slate-700 hover:text-indigo-600 hover:bg-slate-50' ?> transition">
                                 <i class="fa-solid fa-users mr-1.5 text-indigo-400"></i> Data Siswa
                             </a>
@@ -215,6 +218,9 @@ $isGamingTheme = !empty($isGamingTheme);
                 </a>
                 <a href="<?= base_url('teacher/gradebook.php') ?>" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-100">
                     <i class="fa-solid fa-book-open mr-2 text-emerald-500 w-5"></i> Buku Nilai Siswa
+                </a>
+                <a href="<?= base_url('teacher/curriculum.php') ?>" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-100">
+                    <i class="fa-solid fa-book-bookmark mr-2 text-amber-500 w-5"></i> Kurikulum &amp; Materi
                 </a>
                 <a href="<?= base_url('teacher/students.php') ?>" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-100">
                     <i class="fa-solid fa-users mr-2 text-indigo-500 w-5"></i> Data Siswa & Rombel

@@ -53,6 +53,9 @@ require_once __DIR__ . '/../includes/header.php';
             <a href="<?= base_url('student/dashboard.php') ?>" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-extrabold text-xs shadow-md transition flex items-center gap-2">
                 <i class="fa-solid fa-chalkboard-user"></i> Mode Demonstrasi Siswa
             </a>
+            <a href="<?= base_url('teacher/curriculum.php') ?>" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition flex items-center gap-2">
+                <i class="fa-solid fa-book-bookmark"></i> Kelola Kurikulum
+            </a>
             <a href="<?= base_url('teacher/import-csv.php') ?>" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition flex items-center gap-2">
                 <i class="fa-solid fa-file-csv"></i> Import Siswa CSV
             </a>
