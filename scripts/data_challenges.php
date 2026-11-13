@@ -246,18 +246,19 @@ Reamur: 0.0',
   ),
   '3.1' => 
   array (
-    'title' => 'Tantangan 3.1: Pengecekan Angka Positif',
-    'instructions' => 'Ambil satu angka input integer. Jika angka > 0, cetak "POSITIF". Jika tidak, cetak "BUKAN POSITIF".',
-    'starter_code' => 'angka = int(input())
-if angka > 0:
-    print("POSITIF")
-else:
-    print("BUKAN POSITIF")',
+    'title' => 'Tantangan 3.1: Pengecekan Bilangan Positif',
+    'instructions' => 'Buatlah program yang meminta satu input bilangan bulat (integer).
+- Jika angka lebih besar dari 0 (> 0), cetak:
+POSITIF
+- Jika angka 0 atau lebih kecil (<= 0), cetak:
+BUKAN POSITIF',
+    'starter_code' => '# Tulis kodemu di bawah ini
+',
     'test_cases' => 
     array (
       0 => 
       array (
-        'name' => 'Uji 10',
+        'name' => 'Uji Angka Positif (10)',
         'inputs' => 
         array (
           0 => '10',
@@ -266,36 +267,41 @@ else:
       ),
       1 => 
       array (
-        'name' => 'Uji -5',
+        'name' => 'Uji Angka Negatif (-5)',
         'inputs' => 
         array (
           0 => '-5',
         ),
         'expected_output' => 'BUKAN POSITIF',
       ),
+      2 => 
+      array (
+        'name' => 'Uji Angka Nol (0)',
+        'inputs' => 
+        array (
+          0 => '0',
+        ),
+        'expected_output' => 'BUKAN POSITIF',
+      ),
     ),
-    'hint' => 'Gunakan if angka > 0:',
+    'hint' => 'Gunakan fungsi int(input()) untuk membaca angka, lalu bandingkan dengan if angka > 0: print("POSITIF") dan else: print("BUKAN POSITIF").',
     'xp_reward' => 30,
   ),
   '3.2' => 
   array (
-    'title' => 'Tantangan 3.2: Penentu Grade Nilai',
-    'instructions' => 'Buat program penentu grade:
-Nilai >= 85: "GRADE A"
-Nilai >= 70: "GRADE B"
-Lainnya: "GRADE C"',
-    'starter_code' => 'nilai = int(input())
-if nilai >= 85:
-    print("GRADE A")
-elif nilai >= 70:
-    print("GRADE B")
-else:
-    print("GRADE C")',
+    'title' => 'Tantangan 3.2: Penentu Grade Nilai Siswa',
+    'instructions' => 'Buatlah program penentu predikat grade nilai ujian:
+Program menerima satu baris input bilangan bulat (integer).
+- Nilai 85 ke atas (>= 85): cetak "GRADE A"
+- Nilai 70 sampai 84 (>= 70): cetak "GRADE B"
+- Nilai di bawah 70 (< 70): cetak "GRADE C"',
+    'starter_code' => '# Tulis kodemu di bawah ini
+',
     'test_cases' => 
     array (
       0 => 
       array (
-        'name' => 'Uji 90',
+        'name' => 'Uji Grade A (90)',
         'inputs' => 
         array (
           0 => '90',
@@ -304,41 +310,65 @@ else:
       ),
       1 => 
       array (
-        'name' => 'Uji 75',
+        'name' => 'Uji Batas Grade A (85)',
+        'inputs' => 
+        array (
+          0 => '85',
+        ),
+        'expected_output' => 'GRADE A',
+      ),
+      2 => 
+      array (
+        'name' => 'Uji Grade B (75)',
         'inputs' => 
         array (
           0 => '75',
         ),
         'expected_output' => 'GRADE B',
       ),
-      2 => 
+      3 => 
       array (
-        'name' => 'Uji 50',
+        'name' => 'Uji Batas Grade B (70)',
         'inputs' => 
         array (
-          0 => '50',
+          0 => '70',
+        ),
+        'expected_output' => 'GRADE B',
+      ),
+      4 => 
+      array (
+        'name' => 'Uji Grade C (55)',
+        'inputs' => 
+        array (
+          0 => '55',
         ),
         'expected_output' => 'GRADE C',
       ),
     ),
-    'hint' => 'Gunakan if-elif-else terurut dari nilai terbesar.',
-    'xp_reward' => 30,
+    'hint' => 'Gunakan struktur percabangan bertingkat terurut: if nilai >= 85: ... elif nilai >= 70: ... else: ...',
+    'xp_reward' => 35,
   ),
   '3.3' => 
   array (
     'title' => 'Tantangan 3.3: Seleksi Penerima Diskon Kafe',
-    'instructions' => 'Siswa berhak diskon jika umur < 18 ATAU memiliki status member True. Input baris 1: umur (int), baris 2: member ("ya" / "tidak"). Jika berhak diskon, cetak "DAPAT DISKON", jika tidak cetak "HARGA NORMAL".',
-    'starter_code' => 'umur = int(input())
-member = input()
-if umur < 18 or member == "ya":
-    print("DAPAT DISKON")
-else:
-    print("HARGA NORMAL")',
+    'instructions' => 'Sebuah kafe memberikan diskon jika pembeli berumur di bawah 18 tahun (< 18) ATAU memiliki status member "ya".
+
+Program menerima 2 baris input:
+- Baris 1: Umur pembeli dalam integer (int)
+- Baris 2: Status kartu member berupa teks (str): "ya" atau "tidak"
+
+Aturan cetak:
+- Jika berhak mendapatkan diskon, cetak:
+DAPAT DISKON
+- Jika tidak berhak mendapatkan diskon, cetak:
+HARGA NORMAL',
+    'starter_code' => '# Tulis kodemu di bawah ini
+',
     'test_cases' => 
     array (
       0 => 
       array (
-        'name' => 'Uji Umur 16 Non Member',
+        'name' => 'Uji Remaja Non-Member (Umur 16, Member tidak)',
         'inputs' => 
         array (
           0 => '16',
@@ -348,36 +378,49 @@ else:
       ),
       1 => 
       array (
-        'name' => 'Uji Umur 25 Non Member',
+        'name' => 'Uji Dewasa Member (Umur 25, Member ya)',
         'inputs' => 
         array (
           0 => '25',
+          1 => 'ya',
+        ),
+        'expected_output' => 'DAPAT DISKON',
+      ),
+      2 => 
+      array (
+        'name' => 'Uji Dewasa Non-Member (Umur 22, Member tidak)',
+        'inputs' => 
+        array (
+          0 => '22',
           1 => 'tidak',
         ),
         'expected_output' => 'HARGA NORMAL',
       ),
     ),
-    'hint' => 'Gunakan operator or: if umur < 18 or member == "ya":',
+    'hint' => 'Gunakan operator logika or untuk menggabungkan kondisi: if umur < 18 or member == "ya":',
     'xp_reward' => 40,
   ),
   '3.4' => 
   array (
-    'title' => 'Tantangan 3.4: Validasi Gerbang Masuk',
-    'instructions' => 'Input baris 1: status kartu ("aktif"/"nonaktif"). Input baris 2: saldo tiket (int). Jika kartu "aktif", periksa saldo: jika saldo >= 5000 cetak "PINTU TERBUKA", jika saldo < 5000 cetak "SALDO KURANG". Jika kartu bukan "aktif", cetak "KARTU TIDAK VALID".',
-    'starter_code' => 'kartu = input()
-saldo = int(input())
-if kartu == "aktif":
-    if saldo >= 5000:
-        print("PINTU TERBUKA")
-    else:
-        print("SALDO KURANG")
-else:
-    print("KARTU TIDAK VALID")',
+    'title' => 'Tantangan 3.4: Validasi Gerbang Masuk (Nested if)',
+    'instructions' => 'Buatlah sistem validasi gerbang otomatis menggunakan percabangan bersarang (nested if).
+
+Program menerima 2 baris input:
+- Baris 1: Status kartu (str): "aktif" atau teks lainnya
+- Baris 2: Saldo kartu dalam integer (int)
+
+Alur pengecekan:
+1. Jika status kartu adalah "aktif":
+   - Jika saldo >= 5000, cetak: "PINTU TERBUKA"
+   - Jika saldo < 5000, cetak: "SALDO KURANG"
+2. Jika status kartu bukan "aktif", cetak: "KARTU TIDAK VALID"',
+    'starter_code' => '# Tulis kodemu di bawah ini
+',
     'test_cases' => 
     array (
       0 => 
       array (
-        'name' => 'Uji Aktif Cukup Saldo',
+        'name' => 'Uji Kartu Aktif Saldo Cukup (10000)',
         'inputs' => 
         array (
           0 => 'aktif',
@@ -387,35 +430,55 @@ else:
       ),
       1 => 
       array (
-        'name' => 'Uji Kartu Rusak',
+        'name' => 'Uji Kartu Aktif Saldo Kurang (2000)',
+        'inputs' => 
+        array (
+          0 => 'aktif',
+          1 => '2000',
+        ),
+        'expected_output' => 'SALDO KURANG',
+      ),
+      2 => 
+      array (
+        'name' => 'Uji Kartu Blokir / Tidak Aktif',
         'inputs' => 
         array (
           0 => 'blokir',
-          1 => '5000',
+          1 => '10000',
         ),
         'expected_output' => 'KARTU TIDAK VALID',
       ),
     ),
-    'hint' => 'Gunakan percabangan bersarang if kartu == "aktif": lalu if saldo >= 5000:',
+    'hint' => 'Buat if kartu == "aktif": terlebih dahulu, lalu di dalamnya buat percabangan kedua if saldo >= 5000: ... else: ...',
     'xp_reward' => 40,
   ),
   '3.5' => 
   array (
     'title' => 'Tantangan 3.5 (Boss): Sistem Kelulusan Mandiri',
-    'instructions' => 'Input baris 1: nilai (int), baris 2: kehadiran (int), baris 3: sikap (str). Jika nilai >= 75 dan kehadiran >= 80 dan (sikap == "A" or sikap == "B"), cetak "STATUS: LULUS". Jika tidak, cetak "STATUS: TIDAK LULUS".',
-    'starter_code' => 'nilai = int(input())
-kehadiran = int(input())
-sikap = input()
+    'instructions' => 'Buatlah sistem penentu kelulusan siswa berbasis KKM multi-syarat.
 
-if nilai >= 75 and kehadiran >= 80 and (sikap == "A" or sikap == "B"):
-    print("STATUS: LULUS")
-else:
-    print("STATUS: TIDAK LULUS")',
+Program menerima 3 baris input:
+- Baris 1: Nilai akademik (int)
+- Baris 2: Persentase kehadiran (int)
+- Baris 3: Predikat sikap (str): huruf "A", "B", "C", dst.
+
+Siswa dinyatakan lulus jika memenuhi SELURUH kriteria berikut:
+1. Nilai akademik minimal 75 (nilai >= 75)
+2. Kehadiran minimal 80 (kehadiran >= 80)
+3. Predikat sikap adalah "A" ATAU "B"
+
+Aturan cetak:
+- Jika memenuhi ketiga syarat di atas, cetak:
+STATUS: LULUS
+- Jika ada syarat yang tidak terpenuhi, cetak:
+STATUS: TIDAK LULUS',
+    'starter_code' => '# Tulis kodemu di bawah ini
+',
     'test_cases' => 
     array (
       0 => 
       array (
-        'name' => 'Uji Lulus',
+        'name' => 'Uji Siswa Lulus Sempurna',
         'inputs' => 
         array (
           0 => '85',
@@ -426,7 +489,7 @@ else:
       ),
       1 => 
       array (
-        'name' => 'Uji Nilai Kurang',
+        'name' => 'Uji Nilai di Bawah KKM (Nilai 70)',
         'inputs' => 
         array (
           0 => '70',
@@ -435,8 +498,30 @@ else:
         ),
         'expected_output' => 'STATUS: TIDAK LULUS',
       ),
+      2 => 
+      array (
+        'name' => 'Uji Kehadiran Kurang (Kehadiran 75)',
+        'inputs' => 
+        array (
+          0 => '90',
+          1 => '75',
+          2 => 'B',
+        ),
+        'expected_output' => 'STATUS: TIDAK LULUS',
+      ),
+      3 => 
+      array (
+        'name' => 'Uji Sikap Tidak Memenuhi (Sikap C)',
+        'inputs' => 
+        array (
+          0 => '95',
+          1 => '95',
+          2 => 'C',
+        ),
+        'expected_output' => 'STATUS: TIDAK LULUS',
+      ),
     ),
-    'hint' => 'Perhatikan tanda kurung pada (sikap == "A" or sikap == "B") agar logika tidak tertukar.',
+    'hint' => 'Gunakan tanda kurung untuk menggabungkan kondisi sikap: if nilai >= 75 and kehadiran >= 80 and (sikap == "A" or sikap == "B"): ... else: ...',
     'xp_reward' => 50,
   ),
   '4.1' => 
