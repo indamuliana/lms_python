@@ -105,28 +105,36 @@ try {
         }
     }
 
-    // 2. NORMALISASI & UPDATE TEST CASES PADA TABEL CHALLENGES
-    echo "\n[+] Memeriksa & Menormalisasi Tantangan Koding Multi-Baris...\n";
-    $chRows = $db->query("SELECT id, topic_id, test_cases_json FROM challenges ORDER BY id ASC")->fetchAll();
-    $stmtUpCh = $db->prepare("UPDATE challenges SET test_cases_json = ? WHERE id = ?");
+    // 2. UPDATE & NORMALISASI 40 TANTANGAN KODING (Termasuk Output Multi-Baris)
+    echo "\n[+] Menyinkronkan 40 Tantangan Koding & Kriteria Auto-Grader...\n";
+    $challengesFile = __DIR__ . '/data_challenges.php';
+    if (file_exists($challengesFile)) {
+        $masterChallenges = require $challengesFile;
+        $stmtFindTopicForCh = $db->prepare("SELECT id FROM topics WHERE sub_code = ? LIMIT 1");
+        $stmtUpsertCh = $db->prepare("
+            UPDATE challenges 
+            SET title = ?, instructions = ?, starter_code = ?, test_cases_json = ?, hint = ?, xp_reward = ?
+            WHERE topic_id = ?
+        ");
 
-    foreach ($chRows as $r) {
-        $raw = $r['test_cases_json'];
-        $decoded = json_decode($raw, true);
-
-        if ($decoded === null) {
-            $fixed = preg_replace_callback('/"([^"\\\\]*(?:\\\\.[^"\\\\]*)*)"/s', function($m) {
-                return '"' . str_replace(["\r\n", "\r", "\n"], "\\n", $m[1]) . '"';
-            }, $raw);
-
-            $parsed = json_decode($fixed, true);
-            if ($parsed !== null) {
-                $cleanJson = json_encode($parsed, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-                $stmtUpCh->execute([$cleanJson, $r['id']]);
+        foreach ($masterChallenges as $subCode => $chData) {
+            $stmtFindTopicForCh->execute([$subCode]);
+            $tId = $stmtFindTopicForCh->fetchColumn();
+            if ($tId) {
+                $tcJson = json_encode($chData['test_cases'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                $stmtUpsertCh->execute([
+                    trim($chData['title']),
+                    trim($chData['instructions']),
+                    trim($chData['starter_code']),
+                    $tcJson,
+                    trim($chData['hint']),
+                    (int)$chData['xp_reward'],
+                    $tId
+                ]);
                 $totalChallengesFixed++;
-                echo "  - Challenge ID {$r['id']} (Topik {$r['topic_id']}): Diperbaiki ke JSON valid.\n";
             }
         }
+        echo "  - Berhasil menyinkronkan {$totalChallengesFixed} tantangan koding resmi.\n";
     }
 
     $db->commit();

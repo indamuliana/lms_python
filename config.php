@@ -34,8 +34,8 @@ function base_url($path = '') {
     // Tentukan direktori root relatif dari dokumen root
     $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
     
-    // Normalisasi jika subfolder (misal /student atau /teacher)
-    $cleanPath = preg_replace('/(\/(student|teacher|api|includes|assets.*))$/', '', $scriptDir);
+    // Normalisasi jika subfolder (misal /student, /teacher, /scripts, dll)
+    $cleanPath = preg_replace('/(\/(student|teacher|api|includes|assets.*|scripts))$/', '', $scriptDir);
     $baseUrl = rtrim($protocol . $host . $cleanPath, '/') . '/';
     
     return $baseUrl . ltrim($path, '/');

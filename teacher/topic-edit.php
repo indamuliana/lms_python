@@ -111,8 +111,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         ]);
                     }
 
+                    // Reset Tantangan Koding (jika ada di data_challenges.php)
+                    $chFile = __DIR__ . '/../scripts/data_challenges.php';
+                    if (file_exists($chFile)) {
+                        $allChData = require $chFile;
+                        if (isset($allChData[$codeKey])) {
+                            $stdCh = $allChData[$codeKey];
+                            $tcJson = json_encode($stdCh['test_cases'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                            $upCh = $db->prepare("
+                                UPDATE challenges 
+                                SET title = ?, instructions = ?, starter_code = ?, test_cases_json = ?, hint = ?, xp_reward = ?
+                                WHERE topic_id = ?
+                            ");
+                            $upCh->execute([
+                                trim($stdCh['title']),
+                                trim($stdCh['instructions']),
+                                trim($stdCh['starter_code']),
+                                $tcJson,
+                                trim($stdCh['hint']),
+                                (int)$stdCh['xp_reward'],
+                                $topicId
+                            ]);
+                            $db->prepare("UPDATE topics SET starter_code = ? WHERE id = ?")
+                               ->execute([trim($stdCh['starter_code']), $topicId]);
+                        }
+                    }
+
                     $db->commit();
-                    set_flash('success', "Materi dan kuis untuk {$codeKey} berhasil direset ke standar kurikulum bawaan!");
+                    set_flash('success', "Materi, kuis, dan tantangan koding untuk {$codeKey} berhasil direset ke standar kurikulum!");
                 } catch (Exception $e) {
                     $db->rollBack();
                     set_flash('danger', "Gagal mereset konten: " . $e->getMessage());

@@ -328,7 +328,7 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
-<script src="<?= base_url('assets/js/pyodide-engine.js') ?>"></script>
+<script src="<?= base_url('assets/js/pyodide-engine.js?v=' . (file_exists(__DIR__ . '/../assets/js/pyodide-engine.js') ? filemtime(__DIR__ . '/../assets/js/pyodide-engine.js') : '2.0')) ?>"></script>
 <script>
     const testCasesRaw = <?= json_encode($activeChallenge['test_cases_json']) ?>;
     const challengeId = <?= (int)$activeChallenge['id'] ?>;
