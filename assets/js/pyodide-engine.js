@@ -188,14 +188,10 @@ builtins.input = _test_input
 
                 // Evaluasi kebenaran
                 if (tc.expected_output !== undefined) {
-                    // Normalisasi pembanding string (abaikan spasi berlebih di akhir baris)
-                    const cleanActual = actualOutput.replace(/\r\n/g, "\n").trim();
-                    const cleanExpected = tc.expected_output.replace(/\r\n/g, "\n").trim();
-                    if (cleanActual === cleanExpected) {
-                        passed = true;
-                    } else {
-                        passed = false;
-                    }
+                    // Normalisasi pembanding string: toleran line-ending dan trailing whitespace tiap baris
+                    const cleanActual = normalizeOutput(actualOutput);
+                    const cleanExpected = normalizeOutput(tc.expected_output);
+                    passed = (cleanActual === cleanExpected);
                 } else {
                     // Berhasil jika tidak throw assertion error
                     passed = true;
@@ -224,15 +220,25 @@ builtins.input = _test_input
             const icon = r.passed ? '<i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-400 text-lg"></i>';
 
             html += `
-            <div class="border rounded-xl p-3.5 ${statusClass} flex flex-col gap-1.5 text-xs sm:text-sm">
+            <div class="border rounded-2xl p-4 ${statusClass} flex flex-col gap-2 text-xs sm:text-sm">
                 <div class="flex items-center justify-between font-bold">
                     <span class="flex items-center gap-2">${icon} ${escapeHtml(r.name)}</span>
-                    <span>${r.passed ? 'LOLOS (PASSED)' : 'BELUM SESUAI'}</span>
+                    <span class="text-xs uppercase px-2.5 py-0.5 rounded-full ${r.passed ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300 font-extrabold'}">${r.passed ? 'LOLOS (PASSED)' : 'BELUM SESUAI'}</span>
                 </div>
                 ${!r.passed ? `
-                <div class="bg-black/40 rounded-lg p-2.5 font-mono text-[11px] sm:text-xs text-slate-300 mt-1">
-                    <div><span class="text-slate-400">Diharapkan:</span> ${escapeHtml(r.expected)}</div>
-                    <div><span class="text-rose-400">Hasil Anda:</span> ${escapeHtml(r.actual)}</div>
+                <div class="bg-black/60 border border-slate-700/60 rounded-xl p-3 font-mono text-[11px] sm:text-xs text-slate-200 mt-1 space-y-2.5">
+                    <div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-bullseye text-blue-400"></i> Output yang Diharapkan:
+                        </div>
+                        <pre class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-emerald-400 whitespace-pre-wrap leading-relaxed overflow-x-auto shadow-inner">${escapeHtml(r.expected)}</pre>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-bold text-rose-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> Hasil Output Anda:
+                        </div>
+                        <pre class="bg-slate-950 p-2.5 rounded-lg border border-rose-900/40 text-rose-300 whitespace-pre-wrap leading-relaxed overflow-x-auto shadow-inner">${escapeHtml(r.actual)}</pre>
+                    </div>
                 </div>` : ''}
             </div>`;
         });
@@ -292,4 +298,15 @@ function escapeHtml(text) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+function normalizeOutput(str) {
+    if (typeof str !== 'string') return '';
+    return str
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n")
+        .split("\n")
+        .map(line => line.trimEnd())
+        .join("\n")
+        .trim();
 }

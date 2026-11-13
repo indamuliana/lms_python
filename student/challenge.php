@@ -149,15 +149,51 @@ require_once __DIR__ . '/../includes/header.php';
                     <?= sanitize($activeChallenge['instructions']) ?>
                 </div>
 
-                <?php if ($isTeacher): ?>
-                <div class="p-3.5 bg-amber-50 border border-amber-300 rounded-xl text-xs text-amber-950 mb-4 shadow-sm">
-                    <div class="font-extrabold flex items-center justify-between mb-1.5 text-amber-900">
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-key text-amber-600"></i> Kunci Jawaban / Test Case Guru</span>
-                        <span class="bg-amber-200 text-amber-900 text-[10px] font-black uppercase px-2 py-0.5 rounded">Demo</span>
+                <?php if ($isTeacher): 
+                    $decodedDemoCases = json_decode($activeChallenge['test_cases_json'], true);
+                ?>
+                <div class="p-4 bg-amber-50/90 border border-amber-300 rounded-2xl text-xs text-amber-950 mb-5 shadow-sm">
+                    <div class="font-black flex flex-wrap items-center justify-between gap-2 mb-3 text-amber-900">
+                        <span class="flex items-center gap-2 text-xs sm:text-sm">
+                            <i class="fa-solid fa-key text-amber-600"></i> Kunci Jawaban &amp; Kriteria Auto-Grader Guru
+                        </span>
+                        <div class="flex items-center gap-2">
+                            <span class="bg-amber-200 text-amber-900 text-[10px] font-black uppercase px-2 py-0.5 rounded-full">Mode Guru</span>
+                            <a href="<?= base_url('teacher/topic-edit.php?id=' . (int)$activeChallenge['topic_id'] . '&tab=tantangan') ?>" target="_blank" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold text-[11px] shadow-xs transition inline-flex items-center gap-1">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit Tantangan
+                            </a>
+                        </div>
                     </div>
-                    <div class="font-mono text-[11px] bg-white/90 p-2 rounded-lg border border-amber-200 text-slate-800 overflow-x-auto">
-                        <?= sanitize($activeChallenge['test_cases_json']) ?>
-                    </div>
+
+                    <?php if (is_array($decodedDemoCases) && !empty($decodedDemoCases)): ?>
+                        <div class="space-y-3">
+                            <?php foreach ($decodedDemoCases as $cIdx => $demoTc): ?>
+                            <div class="bg-white p-3 rounded-xl border border-amber-200 shadow-xs">
+                                <div class="flex items-center justify-between mb-1.5 font-bold text-slate-800 text-[11px]">
+                                    <span class="flex items-center gap-1.5">
+                                        <i class="fa-solid fa-vial-circle-check text-indigo-500"></i>
+                                        <?= htmlspecialchars($demoTc['name'] ?? "Pengujian #" . ($cIdx + 1)) ?>
+                                    </span>
+                                    <?php if (!empty($demoTc['inputs'])): ?>
+                                        <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono text-[10px]">
+                                            Input: <?= htmlspecialchars(implode(', ', (array)$demoTc['inputs'])) ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+
+                                <?php if (isset($demoTc['expected_output'])): ?>
+                                    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Output yang Diharapkan (Terminal):</div>
+                                    <pre class="bg-slate-900 text-emerald-400 font-mono text-xs p-3 rounded-xl overflow-x-auto whitespace-pre-wrap leading-relaxed border border-slate-800 shadow-inner"><?= htmlspecialchars($demoTc['expected_output']) ?></pre>
+                                <?php elseif (isset($demoTc['assertion'])): ?>
+                                    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Assertion:</div>
+                                    <pre class="bg-slate-900 text-amber-300 font-mono text-xs p-2 rounded-lg border border-slate-800"><?= htmlspecialchars($demoTc['assertion']) ?></pre>
+                                <?php endif; ?>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <pre class="font-mono text-[11px] bg-white p-2.5 rounded-xl border border-amber-200 text-slate-800 overflow-x-auto whitespace-pre-wrap"><?= htmlspecialchars($activeChallenge['test_cases_json']) ?></pre>
+                    <?php endif; ?>
                 </div>
                 <?php endif; ?>
 

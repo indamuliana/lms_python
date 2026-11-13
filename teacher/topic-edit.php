@@ -292,16 +292,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Kumpulkan Kasus Uji (Test Cases Builder)
         $tcNames = $_POST['tc_name'] ?? [];
         $tcExpected = $_POST['tc_expected'] ?? [];
+        $tcInputs = $_POST['tc_inputs'] ?? [];
         $testCases = [];
 
         foreach ($tcNames as $idx => $name) {
             $cName = trim($name);
             $cExp = trim($tcExpected[$idx] ?? '');
             if (!empty($cName) || !empty($cExp)) {
-                $testCases[] = [
+                $tcItem = [
                     'name' => $cName ?: "Pengujian " . ($idx + 1),
-                    'expected_output' => $cExp
+                    'expected_output' => str_replace(["\r\n", "\r"], "\n", $cExp)
                 ];
+
+                $rawInputs = trim($tcInputs[$idx] ?? '');
+                if (!empty($rawInputs)) {
+                    $parsedInputs = array_values(array_filter(array_map('trim', preg_split('/[\r\n,]+/', $rawInputs)), function($v) {
+                        return $v !== '';
+                    }));
+                    if (!empty($parsedInputs)) {
+                        $tcItem['inputs'] = $parsedInputs;
+                    }
+                }
+
+                $testCases[] = $tcItem;
             }
         }
 
@@ -698,22 +711,37 @@ require_once __DIR__ . '/../includes/header.php';
                     <table class="w-full text-left text-xs" id="testCaseTable">
                         <thead>
                             <tr class="text-slate-400 font-bold uppercase tracking-wider text-[10px] border-b border-slate-200">
-                                <th class="pb-2">Nama Pengujian</th>
-                                <th class="pb-2">Output yang Diharapkan (Expected Output)</th>
-                                <th class="pb-2 w-16 text-right">Aksi</th>
+                                <th class="pb-2.5 w-1/3">Nama Pengujian &amp; Simulasi Input</th>
+                                <th class="pb-2.5">Output Terminal yang Diharapkan (Multi-Baris)</th>
+                                <th class="pb-2.5 w-12 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100" id="testCaseTbody">
-                            <?php foreach ($testCases as $idx => $tc): ?>
-                            <tr class="tc-row">
-                                <td class="py-2.5 pr-2">
-                                    <input type="text" name="tc_name[]" value="<?= htmlspecialchars($tc['name'] ?? '') ?>" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Misal: Cek Sambutan" required>
+                            <?php foreach ($testCases as $idx => $tc): 
+                                $inputsVal = !empty($tc['inputs']) && is_array($tc['inputs']) ? implode(', ', $tc['inputs']) : '';
+                            ?>
+                            <tr class="tc-row align-top">
+                                <td class="py-3 pr-3">
+                                    <label class="block text-[11px] font-bold text-slate-700 mb-1">Nama Pengujian:</label>
+                                    <input type="text" name="tc_name[]" value="<?= htmlspecialchars($tc['name'] ?? '') ?>" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none mb-2" placeholder="Misal: Cek Sambutan" required>
+                                    
+                                    <label class="block text-[10px] font-bold text-slate-500 mb-0.5">
+                                        <i class="fa-solid fa-keyboard mr-1 text-slate-400"></i> Simulasi Input Siswa (Opsional):
+                                    </label>
+                                    <input type="text" name="tc_inputs[]" value="<?= htmlspecialchars($inputsVal) ?>" class="w-full px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Pisahkan koma, misal: 100 atau 80, 90, 100">
+                                    <p class="text-[10px] text-slate-400 mt-0.5">Isi jika kode tantangan memakai <code>input()</code>.</p>
                                 </td>
-                                <td class="py-2.5 pr-2">
-                                    <input type="text" name="tc_expected[]" value="<?= htmlspecialchars($tc['expected_output'] ?? '') ?>" class="w-full px-3 py-1.5 bg-white font-mono border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Teks persis output Python yang diharapkan" required>
+                                <td class="py-3 pr-3">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="block text-[11px] font-bold text-slate-700">Output yang Diharapkan (Terminal):</label>
+                                        <span class="text-[10px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100">
+                                            <i class="fa-solid fa-arrows-up-down mr-0.5"></i> Multi-baris (Tekan Enter)
+                                        </span>
+                                    </div>
+                                    <textarea name="tc_expected[]" rows="4" class="w-full p-2.5 bg-slate-900 text-slate-100 font-mono text-xs border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none shadow-inner leading-relaxed" placeholder="Teks persis output Python yang diharapkan (bisa 1, 4, atau banyak baris)" required><?= htmlspecialchars($tc['expected_output'] ?? '') ?></textarea>
                                 </td>
-                                <td class="py-2.5 text-right">
-                                    <button type="button" onclick="this.closest('.tc-row').remove()" class="text-rose-600 hover:text-rose-800 text-xs px-2 py-1">
+                                <td class="py-3 text-right">
+                                    <button type="button" onclick="this.closest('.tc-row').remove()" class="text-rose-500 hover:text-rose-700 p-2 rounded-lg hover:bg-rose-50 transition" title="Hapus Uji Kasus">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </button>
                                 </td>
@@ -794,16 +822,29 @@ function confirmResetStandard() {
 function addNewTestCaseRow() {
     const tbody = document.getElementById('testCaseTbody');
     const tr = document.createElement('tr');
-    tr.className = 'tc-row';
+    tr.className = 'tc-row align-top';
     tr.innerHTML = `
-        <td class="py-2.5 pr-2">
-            <input type="text" name="tc_name[]" value="Kasus Uji Tambahan" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+        <td class="py-3 pr-3">
+            <label class="block text-[11px] font-bold text-slate-700 mb-1">Nama Pengujian:</label>
+            <input type="text" name="tc_name[]" value="Kasus Uji Tambahan" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none mb-2" required>
+            
+            <label class="block text-[10px] font-bold text-slate-500 mb-0.5">
+                <i class="fa-solid fa-keyboard mr-1 text-slate-400"></i> Simulasi Input Siswa (Opsional):
+            </label>
+            <input type="text" name="tc_inputs[]" value="" class="w-full px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Pisahkan koma, misal: 100 atau 80, 90, 100">
+            <p class="text-[10px] text-slate-400 mt-0.5">Isi jika kode tantangan memakai <code>input()</code>.</p>
         </td>
-        <td class="py-2.5 pr-2">
-            <input type="text" name="tc_expected[]" value="" class="w-full px-3 py-1.5 bg-white font-mono border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Teks persis output yang diharapkan" required>
+        <td class="py-3 pr-3">
+            <div class="flex items-center justify-between mb-1">
+                <label class="block text-[11px] font-bold text-slate-700">Output yang Diharapkan (Terminal):</label>
+                <span class="text-[10px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100">
+                    <i class="fa-solid fa-arrows-up-down mr-0.5"></i> Multi-baris (Tekan Enter)
+                </span>
+            </div>
+            <textarea name="tc_expected[]" rows="4" class="w-full p-2.5 bg-slate-900 text-slate-100 font-mono text-xs border border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none shadow-inner leading-relaxed" placeholder="Teks persis output Python yang diharapkan (bisa 1, 4, atau banyak baris)" required></textarea>
         </td>
-        <td class="py-2.5 text-right">
-            <button type="button" onclick="this.closest('.tc-row').remove()" class="text-rose-600 hover:text-rose-800 text-xs px-2 py-1">
+        <td class="py-3 text-right">
+            <button type="button" onclick="this.closest('.tc-row').remove()" class="text-rose-500 hover:text-rose-700 p-2 rounded-lg hover:bg-rose-50 transition" title="Hapus Uji Kasus">
                 <i class="fa-solid fa-trash-can"></i>
             </button>
         </td>
