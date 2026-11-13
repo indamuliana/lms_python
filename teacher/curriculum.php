@@ -53,6 +53,9 @@ require_once __DIR__ . '/../includes/header.php';
             </p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
+            <a href="<?= base_url('scripts/upgrade_curriculum.php') ?>" onclick="return confirm('Apakah Anda ingin menyinkronkan 40 materi dan 120 kuis ke database?\n\nCATATAN: Seluruh akun siswa, nilai kuis, dan progres pengerjaan dijamin 100% AMAN.')" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition flex items-center gap-2">
+                <i class="fa-solid fa-arrows-rotate"></i> Sinkronkan Kurikulum
+            </a>
             <a href="<?= base_url('student/dashboard.php') ?>" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition flex items-center gap-2">
                 <i class="fa-solid fa-chalkboard-user"></i> Mode Tampilan Siswa
             </a>
